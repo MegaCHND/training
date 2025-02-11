@@ -22,48 +22,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.training.recycler.RecyclerActivity
+import com.example.training.recycler.RecyclerComposeActivity
 import com.example.training.ui.theme.TrainingTheme
 
 class MainActivity : ComponentActivity() {
-    override fun onStop() {
-        super.onStop()
-        Log.d("Lifecycle", "1onStop")
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("Lifecycle", "1onStart")
-
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("Lifecycle", "1onPause")
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("Lifecycle", "1onDestroy")
-
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        Log.d("Lifecycle", "1onRestart")
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("Lifecycle", "1onResume")
-
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("Lifecycle", "1onCreate")
         setContent {
             var text by remember { mutableStateOf("") }
             TrainingTheme {
@@ -74,20 +39,17 @@ class MainActivity : ComponentActivity() {
                         verticalArrangement = Arrangement.Center
                     ) {
                         TextField(value = text, onValueChange = { newString -> text = newString })
-                        Button(onClick = { openA2(text) }) {
-                            Text("Open Activity 2")
+                        Button(onClick = { openRecycle() }) {
+                            Text("Open recycler")
                         }
                     }
-
                 }
             }
         }
     }
 
-    private fun openA2(input :String) {
-        val intent = Intent(this, SecondActivity::class.java).apply {
-            putExtra("user_input", input)
-        }
+    private fun openRecycle(){
+        val intent = Intent(this, RecyclerActivity::class.java)
         startActivity(intent)
     }
 }
