@@ -22,34 +22,44 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.activity
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.training.ui.composeables.MainScreen
+import com.example.training.ui.composeables.MainScreen2
+import com.example.training.ui.composeables.MainScreen3
 import com.example.training.ui.theme.TrainingTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            var text by remember { mutableStateOf("") }
-            TrainingTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        TextField(value = text, onValueChange = { newString -> text = newString })
-                        Button(onClick = { openA2(text) }) {
-                            Text("Open Activity 2")
-                        }
-                    }
-
+            val navController = rememberNavController()
+            NavHost(navController = navController, startDestination = "Home"){
+                composable(route = "Home") {
+                    MainScreen(
+                        {navController.navigate(route = "Main2")},
+                        {navController.navigate(route = "Main3")},
+                        )
+                }
+                composable(route = "Main2") {
+                    MainScreen2({navController.navigate(route = "Home")})
+                }
+                composable(route = "Main3") {
+                    MainScreen3()
+                }
+                activity(route = "asc"){
+                    activityClass=SecondActivity::class
                 }
             }
         }
     }
 
-    private fun openA2(input :String) {
+    private fun openA2(text:String) {
         val intent = Intent(this, SecondActivity::class.java).apply {
-            putExtra("user_input", input)
+            putExtra("user_input", text)
         }
         startActivity(intent)
     }
